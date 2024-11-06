@@ -1,0 +1,57 @@
+name: napari-segment-annotation
+display_name: FooBar Segmentation
+# use 'hidden' to remove plugin from napari hub search results
+visibility: public
+# see https://napari.org/stable/plugins/manifest.html for valid categories
+categories: ["Annotation", "Segmentation", "Acquisition"]
+contributions:
+  commands:
+    - id: napari-segment-annotation.get_reader
+      python_name: napari_segment_annotation._reader:napari_get_reader
+      title: Open data with FooBar Segmentation
+    - id: napari-segment-annotation.write_multiple
+      python_name: napari_segment_annotation._writer:write_multiple
+      title: Save multi-layer data with FooBar Segmentation
+    - id: napari-segment-annotation.write_single_image
+      python_name: napari_segment_annotation._writer:write_single_image
+      title: Save image data with FooBar Segmentation
+    - id: napari-segment-annotation.make_sample_data
+      python_name: napari_segment_annotation._sample_data:make_sample_data
+      title: Load sample data from FooBar Segmentation
+    - id: napari-segment-annotation.make_container_widget
+      python_name: napari_segment_annotation:ImageThreshold
+      title: Make threshold Container widget
+    - id: napari-segment-annotation.make_magic_widget
+      python_name: napari_segment_annotation:threshold_magic_widget
+      title: Make threshold magic widget
+    - id: napari-segment-annotation.make_function_widget
+      python_name: napari_segment_annotation:threshold_autogenerate_widget
+      title: Make threshold function widget
+    - id: napari-segment-annotation.make_qwidget
+      python_name: napari_segment_annotation:ExampleQWidget
+      title: Make example QWidget
+  readers:
+    - command: napari-segment-annotation.get_reader
+      accepts_directories: false
+      filename_patterns: ['*.npy']
+  writers:
+    - command: napari-segment-annotation.write_multiple
+      layer_types: ['image*','labels*']
+      filename_extensions: []
+    - command: napari-segment-annotation.write_single_image
+      layer_types: ['image']
+      filename_extensions: ['.npy']
+  sample_data:
+    - command: napari-segment-annotation.make_sample_data
+      display_name: FooBar Segmentation
+      key: unique_id.1
+  widgets:
+    - command: napari-segment-annotation.make_container_widget
+      display_name: Container Threshold
+    - command: napari-segment-annotation.make_magic_widget
+      display_name: Magic Threshold
+    - command: napari-segment-annotation.make_function_widget
+      autogenerate: true
+      display_name: Autogenerate Threshold
+    - command: napari-segment-annotation.make_qwidget
+      display_name: Example QWidget
