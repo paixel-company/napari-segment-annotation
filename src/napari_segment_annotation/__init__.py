@@ -5,7 +5,7 @@ from ._sample_data import make_sample_data
 from ._widget import ExampleQWidget, ImageThreshold, threshold_autogenerate_widget, threshold_magic_widget
 from ._writer import write_multiple, write_single_image
 from .adjust_mask import load_mask, adjust_mask
-
+from .sam_segmentation_widget import sam_segmentation_widget
 __all__ = (
     "napari_get_reader",
     "write_single_image",
@@ -15,4 +15,5 @@ __all__ = (
     "ImageThreshold",
     "threshold_autogenerate_widget",
     "threshold_magic_widget",
+    "sam_segmentation_widget",
 )

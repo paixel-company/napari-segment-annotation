@@ -38,6 +38,9 @@ contributions:
     - id: napari-segment-annotation.adjust_mask
       python_name: napari_segment_annotation:adjust_mask
       title: Adjust and Save Mask
+    - id: napari-segment-annotation.sam_segmentation_widget  # 新增的命令
+      python_name: napari_segment_annotation.sam_segmentation_widget:sam_segmentation_widget
+      title: Segment Anything (SAM)
 
   readers:
     - command: napari-segment-annotation.get_reader
@@ -76,3 +79,5 @@ contributions:
       display_name: Load Mask
     - command: napari-segment-annotation.adjust_mask
       display_name: Adjust and Save Mask
+    - command: napari-segment-annotation.sam_segmentation_widget  # 新增的小部件
+      display_name: Segment Anything (SAM)
