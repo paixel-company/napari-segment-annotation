@@ -191,6 +191,12 @@ def main():
                 print("已创建新的提示点层。")
             widget.points_layer = points_layer
 
+    def connect_point_callbacks():
+        points_layers = [layer for layer in viewer.layers if isinstance(layer, Points)]
+        for layer in points_layers:
+            if on_click_add_point not in layer.mouse_press_callbacks:
+                layer.mouse_press_callbacks.append(on_click_add_point)
+                print(f"Connected mouse event callback to points layer: {layer.name}")
 
     viewer.layers.events.inserted.connect(connect_point_callbacks)
     viewer.layers.events.removed.connect(connect_point_callbacks)
