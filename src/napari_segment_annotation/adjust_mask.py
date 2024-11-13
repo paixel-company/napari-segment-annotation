@@ -14,7 +14,7 @@ def load_mask(mask_path: Path) -> LabelsData:
 @magic_factory(
     call_button="Adjust and Save Mask",
     operation={"choices": ["invert", "threshold", "none"]},
-    save_path={"label": "Save Adjusted Mask As", "mode": "w", "filter": "*.tif"}
+    save_path={"label": "Save Adjusted Mask As", "mode": "w", "filter": "*.tif;*.tiff"}
 )
 def adjust_mask(
     mask_layer: 'napari.layers.Labels',
