@@ -18,7 +18,7 @@ def load_mask(mask_path: Path) -> LabelsData:
 )
 def adjust_mask(
     mask_layer: 'napari.layers.Labels',
-    operation: str = 'invert',
+    operation: str = 'none',
     save_path: Path = None
 ) -> None:
     """根据选择的操作调整mask，并保存到文件。"""
