@@ -44,7 +44,9 @@ contributions:
     - id: napari-segment-annotation.MaskLabelViewer  # 新增的命令
       python_name: napari_segment_annotation:MaskLabelViewer
       title: Get Mask Label Widget
-
+    - id: napari-segment-annotation.BrushValueSetter  # 新增的命令
+      python_name: napari_segment_annotation:BrushValueSetter
+      title: Brush Value Setter
   readers:
     - command: napari-segment-annotation.get_reader
       accepts_directories: false
@@ -86,3 +88,5 @@ contributions:
       display_name: Segment Anything (SAM)
     - command: napari-segment-annotation.MaskLabelViewer  # 新增的小部件
       display_name: Get Mask Label Widget
+    - command: napari-segment-annotation.BrushValueSetter  # 新增的小部件
+      display_name: Brush Value Setter
