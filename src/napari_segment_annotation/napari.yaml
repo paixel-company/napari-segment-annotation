@@ -50,6 +50,9 @@ contributions:
     - id: napari-segment-annotation.LabelValueSetter  # 新增的命令
       python_name: napari_segment_annotation:LabelValueSetter
       title: Label Value Setter
+    - id: napari-segment-annotation.LabelFilter  # 新增的命令
+      python_name: napari_segment_annotation:LabelFilter
+      title: Label Filter
   readers:
     - command: napari-segment-annotation.get_reader
       accepts_directories: false
@@ -95,3 +98,5 @@ contributions:
       display_name: Brush Value Setter
     - command: napari-segment-annotation.LabelValueSetter  # 新增的小部件
       display_name: Label Value Setter
+    - command: napari-segment-annotation.LabelFilter  # 新增的小部件
+      display_name: Label Filter

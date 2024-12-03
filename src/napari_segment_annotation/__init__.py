@@ -9,6 +9,8 @@ from .sam_segmentation_widget import sam_segmentation_widget
 from .mask_lable import MaskLabelViewer
 from .set_mask_val import BrushValueSetter
 from .label_value_setter import LabelValueSetter
+from .lable_filter import LabelFilter
+
 __all__ = (
     "napari_get_reader",
     "write_single_image",
@@ -23,5 +25,6 @@ __all__ = (
     "adjust_mask",
     "MaskLabelViewer",
     "BrushValueSetter",
-    "LabelValueSetter"
+    "LabelValueSetter",
+    "LabelFilter"
 )
