@@ -38,6 +38,10 @@ class LabelValueSetter(QWidget):
         layout.addWidget(self.refresh_button)
         self.setLayout(layout)
 
+        # 自动更新图层列表
+        self.viewer.layers.events.inserted.connect(self.update_layer_list)
+        self.viewer.layers.events.removed.connect(self.update_layer_list)
+
     # 更新图层列表
     def update_layer_list(self):
         self.layer_selector.clear()
@@ -53,7 +57,14 @@ class LabelValueSetter(QWidget):
         if layer_name:
             selected_layer = self.viewer.layers[layer_name]
             if isinstance(selected_layer, Labels):
-                selected_layer.brush_value = label_value  # 设置笔刷标注值
+                # 设置笔刷的标注值
+                selected_layer.brush_value = label_value
+                print(f"Brush value set to {label_value} for layer '{layer_name}'")
+
+                # 强制刷新图层
+                if hasattr(selected_layer, "refresh"):
+                    selected_layer.refresh()
+
                 self.label_display.setText(f"Set brush label value to {label_value} on layer '{layer_name}'")
             else:
                 self.label_display.setText(f"Selected layer '{layer_name}' is not a Labels layer.")
@@ -64,5 +75,4 @@ class LabelValueSetter(QWidget):
 @napari_hook_implementation
 def napari_experimental_provide_dock_widget(viewer: napari.Viewer) -> QWidget:
     widget = LabelValueSetter(viewer)
-    viewer.layers.events.inserted.connect(widget.update_layer_list)  # 自动更新图层列表
     return widget
