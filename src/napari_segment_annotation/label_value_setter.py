@@ -42,30 +42,30 @@ class LabelValueSetter(QWidget):
         self.viewer.layers.events.inserted.connect(self.update_layer_list)
         self.viewer.layers.events.removed.connect(self.update_layer_list)
 
-    # 更新图层列表
     def update_layer_list(self):
+        """更新图层列表，确保仅显示 Labels 图层。"""
         self.layer_selector.clear()
         for layer in self.viewer.layers:
-            if isinstance(layer, Labels):  # 仅列出 Labels 图层
+            if isinstance(layer, Labels):
                 self.layer_selector.addItem(layer.name)
 
-    # 设置 Label 值
     def apply_label_value(self):
+        """设置 `selected_label` 值并刷新图层。"""
         layer_name = self.layer_selector.currentText()
         label_value = self.label_value_selector.value()
 
         if layer_name:
             selected_layer = self.viewer.layers[layer_name]
             if isinstance(selected_layer, Labels):
-                # 设置笔刷的标注值
-                selected_layer.brush_value = label_value
-                print(f"Brush value set to {label_value} for layer '{layer_name}'")
+                try:
+                    selected_layer.selected_label = label_value  # 设置选中标签值
+                    self.label_display.setText(f"Set label value to {label_value} on layer '{layer_name}'")
 
-                # 强制刷新图层
-                if hasattr(selected_layer, "refresh"):
-                    selected_layer.refresh()
-
-                self.label_display.setText(f"Set brush label value to {label_value} on layer '{layer_name}'")
+                    # 日志打印用于调试
+                    print(f"Set selected_label to {label_value} for layer '{layer_name}'")
+                except Exception as e:
+                    self.label_display.setText(f"Error: {str(e)}")
+                    print(f"Error setting label value: {e}")
             else:
                 self.label_display.setText(f"Selected layer '{layer_name}' is not a Labels layer.")
         else:
