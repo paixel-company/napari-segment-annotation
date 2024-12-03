@@ -6,12 +6,13 @@ from qtpy.QtWidgets import (
     QLabel,
     QComboBox,
     QPushButton,
-    QSpinBox,
     QTableWidget,
     QTableWidgetItem,
     QHBoxLayout,
+    QToolTip,
 )
 import requests
+from PyQt5.QtCore import Qt
 from napari.layers import Labels
 
 
@@ -47,6 +48,8 @@ class LabelFilter(QWidget):
         self.label_table.setColumnCount(2)
         self.label_table.setHorizontalHeaderLabels(["Label ID", "Safe Name"])
         self.label_table.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.label_table.setMouseTracking(True)  # 启用鼠标跟踪
+        self.label_table.cellEntered.connect(self.show_tooltip)  # 连接鼠标悬停事件
 
         # 布局
         pagination_layout = QHBoxLayout()
@@ -130,6 +133,17 @@ class LabelFilter(QWidget):
         if self.current_page < total_pages:
             self.current_page += 1
             self.update_pagination()
+
+    def show_tooltip(self, row, column):
+        """鼠标悬停时显示完整文本"""
+        if column == 1:  # 仅对第二列 (Safe Name) 显示 Tooltip
+            item = self.label_table.item(row, column)
+            if item:
+                QToolTip.showText(
+                    self.label_table.viewport().mapToGlobal(self.label_table.visualItemRect(item).topLeft()),
+                    item.text(),
+                    self.label_table,
+                )
 
 
 # 提供插件小部件
