@@ -8,6 +8,7 @@ from qtpy.QtWidgets import (
     QPushButton,
     QTableWidget,
     QTableWidgetItem,
+    QLineEdit,
     QHBoxLayout,
     QToolTip,
 )
@@ -23,18 +24,22 @@ class LabelFilter(QWidget):
 
         # 数据相关变量
         self.full_data = {}  # 全量数据 (id -> safe_name)
-        self.current_page_data = {}  # 当前页数据
+        self.filtered_data = {}  # 过滤后的数据
         self.page_size = 20  # 每页显示多少条数据
         self.current_page = 1  # 当前页
 
         # 初始化 UI 组件
-        self.label_display = QLabel("Select a template and click on the image to get label info")
+        self.label_display = QLabel("Select a template and search for labels:")
         self.template_selector = QComboBox()
         self.template_selector.addItems(["ccfv3", "civm_rhesus"])
         self.template_selector.currentIndexChanged.connect(self.update_template)
 
         self.layer_selector = QComboBox()
         self.update_layer_list()
+
+        self.search_input = QLineEdit()
+        self.search_input.setPlaceholderText("Search Label ID or Safe Name")
+        self.search_input.textChanged.connect(self.apply_search)
 
         # 分页控件
         self.page_info = QLabel(f"Page {self.current_page}")
@@ -63,6 +68,8 @@ class LabelFilter(QWidget):
         layout.addWidget(self.template_selector)
         layout.addWidget(QLabel("Select Layer:"))
         layout.addWidget(self.layer_selector)
+        layout.addWidget(QLabel("Search:"))  # 添加搜索标签
+        layout.addWidget(self.search_input)  # 添加搜索输入框
         layout.addWidget(self.label_table)
         layout.addLayout(pagination_layout)
         self.setLayout(layout)
@@ -89,6 +96,7 @@ class LabelFilter(QWidget):
         """更新模板数据"""
         self.template = self.template_selector.currentText()
         self.full_data = self.fetch_label_data(self.template)
+        self.filtered_data = self.full_data
         self.current_page = 1
         self.update_pagination()
 
@@ -99,22 +107,36 @@ class LabelFilter(QWidget):
             if isinstance(layer, Labels):
                 self.layer_selector.addItem(layer.name)
 
+    def apply_search(self):
+        """根据搜索关键词更新数据"""
+        query = self.search_input.text().lower()
+        if query:
+            self.filtered_data = {
+                label_id: name
+                for label_id, name in self.full_data.items()
+                if query in str(label_id) or query in name.lower()
+            }
+        else:
+            self.filtered_data = self.full_data
+        self.current_page = 1
+        self.update_pagination()
+
     def update_pagination(self):
         """更新分页显示"""
         # 计算分页数据
         start_index = (self.current_page - 1) * self.page_size
         end_index = start_index + self.page_size
-        items = list(self.full_data.items())
-        self.current_page_data = dict(items[start_index:end_index])
+        items = list(self.filtered_data.items())
+        current_page_data = dict(items[start_index:end_index])
 
         # 更新表格显示
-        self.label_table.setRowCount(len(self.current_page_data))
-        for row, (label_id, safe_name) in enumerate(self.current_page_data.items()):
+        self.label_table.setRowCount(len(current_page_data))
+        for row, (label_id, safe_name) in enumerate(current_page_data.items()):
             self.label_table.setItem(row, 0, QTableWidgetItem(str(label_id)))
             self.label_table.setItem(row, 1, QTableWidgetItem(safe_name))
 
         # 更新分页信息
-        total_pages = (len(self.full_data) + self.page_size - 1) // self.page_size
+        total_pages = (len(self.filtered_data) + self.page_size - 1) // self.page_size
         self.page_info.setText(f"Page {self.current_page} of {total_pages}")
 
         # 控制按钮可用性
@@ -129,7 +151,7 @@ class LabelFilter(QWidget):
 
     def go_to_next_page(self):
         """跳转到下一页"""
-        total_pages = (len(self.full_data) + self.page_size - 1) // self.page_size
+        total_pages = (len(self.filtered_data) + self.page_size - 1) // self.page_size
         if self.current_page < total_pages:
             self.current_page += 1
             self.update_pagination()
