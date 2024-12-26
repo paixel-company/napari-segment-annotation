@@ -28,7 +28,7 @@ class MaskLabelViewer(QWidget):
 
         # Template selector
         self.template_selector = QComboBox()
-        self.template_selector.addItems(["ccfv3", "civm_rhesus"])
+        self.template_selector.addItems(["ccfv3", "civm_rhesus", "visor"])
         self.template_selector.currentIndexChanged.connect(self.update_template)
 
         # Layer selector
