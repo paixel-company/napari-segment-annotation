@@ -31,7 +31,7 @@ class LabelFilter(QWidget):
         # 初始化 UI 组件
         self.label_display = QLabel("Select a template and search for labels:")
         self.template_selector = QComboBox()
-        self.template_selector.addItems(["ccfv3", "civm_rhesus"])
+        self.template_selector.addItems(["ccfv3", "civm_rhesus", "visor"])
         self.template_selector.currentIndexChanged.connect(self.update_template)
 
         self.layer_selector = QComboBox()
