@@ -53,6 +53,9 @@ contributions:
     - id: napari-segment-annotation.LabelFilter  # 新增的命令
       python_name: napari_segment_annotation:LabelFilter
       title: Label Filter
+    - id: napari-segment-annotation.merge_masks  # 新增的命令
+      python_name: napari_segment_annotation:merge_masks
+      title: Merge masks
   readers:
     - command: napari-segment-annotation.get_reader
       accepts_directories: false
@@ -100,3 +103,5 @@ contributions:
       display_name: Label Value Setter
     - command: napari-segment-annotation.LabelFilter  # 新增的小部件
       display_name: Label Filter
+    - command: napari-segment-annotation.merge_masks  # 新增的命令
+      display_name: Merge masks
