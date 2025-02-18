@@ -6,11 +6,8 @@ from napari.layers import Labels
 from pathlib import Path
 from skimage.io import imread
 
-
-@magic_factory(call_button="Merge Masks", 
-               base_mask_layer={'widget_type': 'Layer', 'layer_type': 'labels'},  # 使用正确的 Layer 类型
-               overlay_mask_layer={'widget_type': 'Layer', 'layer_type': 'labels'})  # 使用正确的 Layer 类型
-def merge_masks(base_mask_layer: Labels, overlay_mask_layer: Labels) -> None:
+@magic_factory(call_button="Merge Masks", viewer={'bind': 'viewer'})  # 绑定 viewer 参数
+def merge_masks(viewer, base_mask_layer: Labels, overlay_mask_layer: Labels) -> None:
     """将叠加mask中的非零区域覆盖到基础mask中。"""
     if base_mask_layer is None or overlay_mask_layer is None:
         print("Please select both base mask and overlay mask layers.")
@@ -34,9 +31,8 @@ def merge_masks(base_mask_layer: Labels, overlay_mask_layer: Labels) -> None:
     # 强制刷新显示
     base_mask_layer.refresh()  # 强制刷新显示以更新图层
 
-
 # 注册插件面板，返回插件而非按钮
 @napari_hook_implementation
 def napari_experimental_provide_dock_widget():
     """返回自定义的插件面板，并在面板中显示合并操作"""
-    return merge_masks  # 返回插件而非按钮
+    return [merge_masks]  # 返回插件而非按钮
