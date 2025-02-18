@@ -10,6 +10,7 @@ from .mask_lable import MaskLabelViewer
 from .set_mask_val import BrushValueSetter
 from .label_value_setter import LabelValueSetter
 from .lable_filter import LabelFilter
+from .merge_masks import merge_masks
 
 __all__ = (
     "napari_get_reader",
@@ -26,5 +27,6 @@ __all__ = (
     "MaskLabelViewer",
     "BrushValueSetter",
     "LabelValueSetter",
-    "LabelFilter"
+    "LabelFilter",
+    "merge_masks"
 )
