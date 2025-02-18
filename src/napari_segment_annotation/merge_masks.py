@@ -7,7 +7,9 @@ from pathlib import Path
 from skimage.io import imread
 
 
-@magic_factory(call_button="Merge Masks", base_mask_layer={'widget_type': 'Layer'}, overlay_mask_layer={'widget_type': 'Layer'})
+@magic_factory(call_button="Merge Masks", 
+               base_mask_layer={'widget_type': 'LayerList'}, 
+               overlay_mask_layer={'widget_type': 'LayerList'})
 def merge_masks(base_mask_layer: Labels, overlay_mask_layer: Labels) -> None:
     """将叠加mask中的非零区域覆盖到基础mask中。"""
     if base_mask_layer is None or overlay_mask_layer is None:
@@ -33,8 +35,8 @@ def merge_masks(base_mask_layer: Labels, overlay_mask_layer: Labels) -> None:
     base_mask_layer.refresh()  # 强制刷新显示以更新图层
 
 
-# 注册插件面板
+# 注册插件面板，返回插件而非按钮
 @napari_hook_implementation
 def napari_experimental_provide_dock_widget():
-    """返回自定义的插件面板，并在面板中显示合并按钮"""
+    """返回自定义的插件面板，并在面板中显示合并操作"""
     return merge_masks  # 返回插件而非按钮
