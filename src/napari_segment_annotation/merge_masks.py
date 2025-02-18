@@ -8,8 +8,8 @@ from skimage.io import imread
 
 
 @magic_factory(call_button="Merge Masks", 
-               base_mask_layer={'widget_type': 'LayerList'}, 
-               overlay_mask_layer={'widget_type': 'LayerList'})
+               base_mask_layer={'widget_type': 'LayerList'},  # 使用LayerList选择器
+               overlay_mask_layer={'widget_type': 'LayerList'})  # 使用LayerList选择器
 def merge_masks(base_mask_layer: Labels, overlay_mask_layer: Labels) -> None:
     """将叠加mask中的非零区域覆盖到基础mask中。"""
     if base_mask_layer is None or overlay_mask_layer is None:
